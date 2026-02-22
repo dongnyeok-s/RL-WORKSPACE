@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 학습 결과 (선택적으로 포함 — 모델과 차트는 커밋하되 로그는 제외)
+**/results/tensorboard/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# 발표용 자료 (배포 시 제외)
+발표_가이드.md
