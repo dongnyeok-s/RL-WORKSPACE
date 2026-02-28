@@ -1,7 +1,7 @@
 # RL Workspace — 강화학습 실습 프로젝트
 
-REINFORCE(Vanilla Policy Gradient)와 PPO(Proximal Policy Optimization)를 직접 구현하고,
-두 알고리즘을 비교 분석하는 강화학습 학습용 프로젝트.
+REINFORCE, PPO, DQN, SAC 등 주요 강화학습 알고리즘을 직접 구현하고,
+다양한 환경에서 비교 분석하는 강화학습 학습용 프로젝트.
 
 ---
 
@@ -11,13 +11,16 @@ REINFORCE(Vanilla Policy Gradient)와 PPO(Proximal Policy Optimization)를 직�
 |----------|------|----------|
 | [`cartpole/`](cartpole/) | CartPole-v1 (Gymnasium 내장) | PPO/REINFORCE 구현 + 비교 실험 |
 | [`drone_drop/`](drone_drop/) | 2D 드론 투하 (Gymnasium 커스텀) | 커스텀 환경 설계 + PPO vs REINFORCE 성능 비교 |
+| [`lunar_lander/`](lunar_lander/) | LunarLander (Discrete + Continuous) | PPO, DQN, SAC, REINFORCE 4대 알고리즘 비교 |
 
 ### 학습 순서
 
 ```
-1. cartpole/  — PPO 핵심 개념 학습 (Actor-Critic, GAE, Clip Loss)
+1. cartpole/     — PPO 핵심 개념 학습 (Actor-Critic, GAE, Clip Loss)
        ↓
-2. drone_drop/ — 커스텀 환경 설계 + 실전 적용
+2. drone_drop/   — 커스텀 환경 설계 + 실전 적용
+       ↓
+3. lunar_lander/ — 4대 알고리즘 확장 (DQN, SAC 추가 + 연속 행동 공간)
 ```
 
 ---
@@ -44,19 +47,30 @@ RL Workspace/
 │   │   └── evaluate.py                모델 평가 + 렌더링
 │   └── results/                       학습 결과 (모델, 그래프, 로그)
 │
-└── drone_drop/                        ── 실험 2: 드론 투하 ──
+├── drone_drop/                        ── 실험 2: 드론 투하 ──
+│   ├── README.md                      프로젝트 설명
+│   ├── make_analysis.py               PPO vs REINFORCE 비교 차트 생성
+│   ├── drone_drop_ppo/
+│   │   ├── env.py                     ★ 커스텀 Gymnasium 환경 + Pygame 렌더링
+│   │   ├── network.py                 Actor-Critic 신경망
+│   │   ├── buffer.py                  Rollout Buffer + GAE
+│   │   ├── ppo_agent.py               PPO Clip Loss 업데이트
+│   │   ├── pg_agent.py                REINFORCE 에이전트
+│   │   ├── train.py                   PPO 학습 스크립트
+│   │   ├── train_pg.py                REINFORCE 학습 스크립트
+│   │   └── evaluate.py                모델 평가 + Pygame 시각화
+│   └── results/                       학습 결과 (모델, 그래프, 로그)
+│
+└── lunar_lander/                      ── 실험 3: LunarLander 4대 알고리즘 ──
     ├── README.md                      프로젝트 설명
-    ├── make_analysis.py               PPO vs REINFORCE 비교 차트 생성
-    ├── drone_drop_ppo/
-    │   ├── env.py                     ★ 커스텀 Gymnasium 환경 + Pygame 렌더링
-    │   ├── network.py                 Actor-Critic 신경망
-    │   ├── buffer.py                  Rollout Buffer + GAE
-    │   ├── ppo_agent.py               PPO Clip Loss 업데이트
-    │   ├── pg_agent.py                REINFORCE 에이전트
-    │   ├── train.py                   PPO 학습 스크립트
-    │   ├── train_pg.py                REINFORCE 학습 스크립트
-    │   └── evaluate.py                모델 평가 + Pygame 시각화
-    └── results/                       학습 결과 (모델, 그래프, 로그)
+    ├── configs/                       알고리즘별 하이퍼파라미터
+    ├── networks/                      PPO/DQN/SAC/REINFORCE 신경망
+    ├── buffers/                       On-Policy(Rollout) + Off-Policy(Replay) 버퍼
+    ├── agents/                        4대 알고리즘 에이전트
+    ├── train/                         학습 스크립트 (개별 + run_all)
+    ├── evaluate.py                    통합 평가 + 렌더링
+    ├── compare.py                     비교 분석 차트 생성
+    └── results/                       학습 결과 (모델, 그래프, TensorBoard)
 ```
 
 ---
@@ -102,7 +116,29 @@ python -m drone_drop_ppo.evaluate --compare-pg     # REINFORCE vs PPO 비교
 python make_analysis.py
 ```
 
-### 4. TensorBoard 실시간 모니터링
+### 4. LunarLander 실험 (4대 알고리즘 비교)
+
+```bash
+# 의존성 추가 설치
+brew install swig && pip install gymnasium[box2d]
+
+# 전체 학습 (PPO, REINFORCE, DQN, PPO-Cont, SAC 순차 실행)
+python -m lunar_lander.train.run_all
+
+# 개별 학습
+python -m lunar_lander.train.train_ppo                # PPO Discrete
+python -m lunar_lander.train.train_dqn                # DQN
+python -m lunar_lander.train.train_sac                # SAC
+
+# 평가 + 렌더링
+python -m lunar_lander.evaluate --algo sac --render
+python -m lunar_lander.evaluate --all
+
+# 비교 차트
+python -m lunar_lander.compare
+```
+
+### 5. TensorBoard 실시간 모니터링
 
 ```bash
 # CartPole
@@ -110,6 +146,9 @@ tensorboard --logdir cartpole/results/tensorboard
 
 # 드론 투하
 tensorboard --logdir drone_drop/results/tensorboard
+
+# LunarLander (5개 알고리즘 동시 비교)
+tensorboard --logdir lunar_lander/results/tensorboard
 ```
 
 ---

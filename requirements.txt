@@ -3,6 +3,7 @@
 
 # 강화학습 환경
 gymnasium[classic-control]==1.2.3
+gymnasium[box2d]==1.2.3       # LunarLander (brew install swig 필요)
 
 # 시각화
 pygame==2.6.1
