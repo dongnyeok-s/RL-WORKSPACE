@@ -66,7 +66,7 @@ def plot_comparison(data: dict, save_dir: str):
     ax.axhline(y=15, color="green", linestyle="--", alpha=0.5, label="Target (15)")
     ax.set_xlabel("Episode")
     ax.set_ylabel("Total Reward")
-    ax.set_title("학습 곡선 비교 — Shaped vs Sparse")
+    ax.set_title("Learning Curve — Shaped vs Sparse")
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -82,10 +82,10 @@ def plot_comparison(data: dict, save_dir: str):
                 ma = np.convolve(dists, np.ones(window) / window, mode="valid")
                 ax.plot(np.arange(window - 1, len(dists)), ma,
                         color=color, linewidth=2, label=label)
-    ax.axhline(y=5, color="green", linestyle="--", alpha=0.5, label="5m 기준")
+    ax.axhline(y=5, color="green", linestyle="--", alpha=0.5, label="5m threshold")
     ax.set_xlabel("Drop Episode")
     ax.set_ylabel("Landing Distance (m)")
-    ax.set_title("착지 거리 변화 — Shaped vs Sparse")
+    ax.set_title("Landing Distance — Shaped vs Sparse")
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -108,7 +108,7 @@ def plot_comparison(data: dict, save_dir: str):
         patch.set_facecolor(color)
         patch.set_alpha(0.6)
     ax.set_ylabel("Total Reward")
-    ax.set_title("최종 성능 분포 (Last 100 Episodes)")
+    ax.set_title("Final Reward Distribution (Last 100 Episodes)")
     ax.grid(True, alpha=0.3, axis="y")
 
     # 1-4. 착지 거리 분포
@@ -130,13 +130,13 @@ def plot_comparison(data: dict, save_dir: str):
         for patch, color in zip(bp["boxes"], colors):
             patch.set_facecolor(color)
             patch.set_alpha(0.6)
-    ax.axhline(y=5, color="green", linestyle="--", alpha=0.5, label="5m 기준")
+    ax.axhline(y=5, color="green", linestyle="--", alpha=0.5, label="5m threshold")
     ax.set_ylabel("Landing Distance (m)")
-    ax.set_title("착지 거리 분포 (Last 100 Drops)")
+    ax.set_title("Landing Distance Distribution (Last 100 Drops)")
     ax.legend()
     ax.grid(True, alpha=0.3, axis="y")
 
-    plt.suptitle("Shaped vs Sparse Reward — 비교 분석", fontsize=14, fontweight="bold")
+    plt.suptitle("Shaped vs Sparse Reward — Comparison Analysis", fontsize=14, fontweight="bold")
     plt.tight_layout()
     path = os.path.join(save_dir, "comparison_shaped_vs_sparse.png")
     plt.savefig(path, dpi=150)
