@@ -108,10 +108,10 @@ class DroneDropEnv3D(gym.Env):
         """환경 초기화."""
         super().reset(seed=seed)
 
-        # 드론 시작 위치: 월드 가장자리에서 랜덤
+        # 드론 시작 위치: 타겟 근처에서 시작 (학습 가능한 거리)
         angle = self.np_random.uniform(0, 2 * np.pi)
         start_dist = self.np_random.uniform(
-            self.world_size * 0.4, self.world_size * 0.7
+            self.world_size * 0.2, self.world_size * 0.5
         )
         self.drone_pos = np.array([
             start_dist * np.cos(angle),     # x
@@ -302,7 +302,7 @@ class DroneDropEnv3D(gym.Env):
         just_dropped = False
         landing_distance = 0.0
 
-        if action[3] >= 0.0 and not self.has_dropped:
+        if action[3] > 0.8 and not self.has_dropped:
             self.has_dropped = True
             just_dropped = True
             landing_pos = self._compute_3d_landing()

@@ -11,9 +11,9 @@ BASE_CONFIG = {
     "action_dim": 4,
 
     # ── 물리 (시뮬레이션) ──────────────────────────────────────────────────────
-    "world_size": 200.0,        # 월드 크기 (m)
-    "max_altitude": 80.0,       # 최대 고도 (m)
-    "default_altitude": 50.0,   # 기본 비행 고도 (m)
+    "world_size": 80.0,         # 월드 크기 (m) — 학습 효율을 위해 축소
+    "max_altitude": 60.0,       # 최대 고도 (m)
+    "default_altitude": 40.0,   # 기본 비행 고도 (m)
     "gravity": 9.81,            # 중력 가속도 (m/s²)
     "dt": 1.0 / 30.0,           # 시뮬레이션 타임스텝 (30Hz)
     "max_steps": 600,           # 최대 스텝 수 (20초)

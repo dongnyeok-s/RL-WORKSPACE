@@ -28,15 +28,15 @@ class ShapedReward:
     SOFT_MIN_ALT = 15.0        # 소프트 고도 경계 (m) — 경고 구간
 
     # ── 보상 스케일 ────────────────────────────────────────────────────────────
-    TIME_PENALTY = -0.01       # 매 스텝 시간 페널티
-    ENERGY_COEFF = 0.005       # 에너지 페널티 계수
-    APPROACH_SCALE = 3.0       # 접근 보상 스케일
-    ALIGNMENT_BONUS = 0.02     # 정렬 보너스 최대값
-    TIMING_BONUS = 0.1         # 타이밍 보상
-    TIMING_THRESHOLD = 0.05    # 타이밍 임계값
+    TIME_PENALTY = 0.0         # 시간 페널티 제거 (접근 보상과 충돌 방지)
+    ENERGY_COEFF = 0.002       # 에너지 페널티 계수 (축소)
+    APPROACH_SCALE = 10.0      # 접근 보상 스케일 (3→10, 핵심 학습 신호)
+    ALIGNMENT_BONUS = 0.05     # 정렬 보너스 최대값
+    TIMING_BONUS = 0.3         # 타이밍 보상 (증가)
+    TIMING_THRESHOLD = 0.08    # 타이밍 임계값 (약간 완화)
 
     # ── 투하 보상 ──────────────────────────────────────────────────────────────
-    MAX_REWARD_DIST = 50.0     # 보상이 0이 되는 최대 거리 (m)
+    MAX_REWARD_DIST = 100.0    # 보상이 0이 되는 최대 거리 (m) — 초기 거리에 맞춤
     DISTANCE_SCALE = 15.0      # 거리 비례 보상 최대값
 
     # 정밀도 티어: (거리 임계값, 보너스)
@@ -157,7 +157,7 @@ class SparseReward:
     4계층 Shaped Reward와의 비교를 통해 보상 설계의 효과를 검증한다.
     """
 
-    MAX_REWARD_DIST = 50.0
+    MAX_REWARD_DIST = 100.0    # Shaped와 동일하게 맞춤
     DISTANCE_SCALE = 15.0
     PRECISION_TIERS = [
         (1.0, 10.0),

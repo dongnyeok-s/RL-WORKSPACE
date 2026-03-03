@@ -15,25 +15,32 @@ import numpy as np
 
 STAGES = [
     {
-        "name": "Easy",
-        "target_radius": 10.0,    # 성공 판정 반경 (m)
+        "name": "Baby",
+        "target_radius": 15.0,    # 넓은 성공 판정 반경 (m)
         "max_wind": 0.0,          # 바람 없음
-        "start_dist_range": (20.0, 40.0),   # 시작 거리 (m)
-        "world_size": 100.0,
+        "start_dist_range": (8.0, 15.0),    # 매우 가까운 시작 거리 (m)
+        "world_size": 30.0,
+    },
+    {
+        "name": "Easy",
+        "target_radius": 10.0,
+        "max_wind": 0.0,
+        "start_dist_range": (15.0, 30.0),
+        "world_size": 50.0,
     },
     {
         "name": "Medium",
         "target_radius": 5.0,
         "max_wind": 2.0,
-        "start_dist_range": (40.0, 100.0),
-        "world_size": 150.0,
+        "start_dist_range": (20.0, 50.0),
+        "world_size": 80.0,
     },
     {
         "name": "Hard",
         "target_radius": 3.0,
         "max_wind": 5.0,
-        "start_dist_range": (50.0, 150.0),
-        "world_size": 200.0,
+        "start_dist_range": (30.0, 80.0),
+        "world_size": 100.0,
     },
 ]
 
